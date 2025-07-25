@@ -5,6 +5,7 @@ import {
   Route,
   RootRoute,
   Link,
+  Outlet, // <-- Add this import
 } from '@tanstack/react-router';
 import Home from '../pages/Home';
 import Products from '../pages/Products';
@@ -19,8 +20,9 @@ import { Button } from '../components/ui/button';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '../components/ui/navigation-menu';
 import Logo from '../components/Logo';
 import MobileMenu from '../components/MobileMenu';
+import ProductDetail from '../pages/ProductDetail';
 
-function MainLayout({ children }: { children: React.ReactNode }) {
+function MainLayout() {
   // Simulate user state for demo (replace with real auth logic later)
   const isLoggedIn = true;
   const isAdmin = true;
@@ -77,7 +79,9 @@ function MainLayout({ children }: { children: React.ReactNode }) {
           )}
         </nav>
       </header>
-      <main className="flex-1 container mx-auto py-8">{children}</main>
+      <main className="flex-1 container mx-auto py-8">
+        <Outlet /> {/* <-- This renders the current page! */}
+      </main>
       <footer className="border-t py-6 text-center text-muted-foreground bg-background text-sm">
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-2">
           <Link to="/about" className="hover:underline">About</Link>
@@ -141,10 +145,16 @@ const adminRoute = new Route({
   path: '/admin',
   component: AdminDashboard,
 });
+const productDetailRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/products/:productId',
+  component: ProductDetail,
+});
 
 const routeTree = rootRoute.addChildren([
   homeRoute,
   productsRoute,
+  productDetailRoute,
   cartRoute,
   checkoutRoute,
   loginRoute,
