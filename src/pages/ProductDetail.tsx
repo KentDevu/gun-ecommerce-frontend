@@ -3,28 +3,65 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { ShoppingCart } from 'lucide-react';
+import { useParams } from '@tanstack/react-router';
 
-const product = {
-  id: 1,
-  name: 'Colt 1911',
-  brand: 'Colt',
-  price: 899,
-  images: [
-    '/assets/colt1911.jpg',
-    '/assets/colt1911-2.jpg',
-    '/assets/colt1911-3.jpg',
-  ],
-  description: 'Classic .45 ACP pistol. Legendary reliability and performance.',
-  category: 'Pistol',
-  caliber: '.45 ACP',
-  stock: 12,
-  sizes: ['Standard', 'Compact'],
-};
+const products = [
+  {
+    id: 1,
+    name: 'Colt 1911',
+    brand: 'Colt',
+    price: 899,
+    images: [
+      '/assets/colt1911.jpg',
+      '/assets/colt1911-2.jpg',
+      '/assets/colt1911-3.jpg',
+    ],
+    description: 'Classic .45 ACP pistol. Legendary reliability and performance.',
+    category: 'Pistol',
+    caliber: '.45 ACP',
+    stock: 12,
+    sizes: ['Standard', 'Compact'],
+  },
+  {
+    id: 2,
+    name: 'Glock 17',
+    brand: 'Glock',
+    price: 599,
+    images: [
+      '/assets/glock17.jpg',
+    ],
+    description: 'Reliable 9mm handgun.',
+    category: 'Pistol',
+    caliber: '9mm',
+    stock: 8,
+    sizes: ['Standard'],
+  },
+  {
+    id: 3,
+    name: 'Remington 870',
+    brand: 'Remington',
+    price: 499,
+    images: [
+      '/assets/remington870.jpg',
+    ],
+    description: 'Legendary pump-action shotgun.',
+    category: 'Shotgun',
+    caliber: '12 Gauge',
+    stock: 5,
+    sizes: ['Standard'],
+  },
+];
 
 export default function ProductDetail() {
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+  const { productId } = useParams({ strict: false });
+  const product = products.find(p => String(p.id) === String(productId));
+  const [selectedImage, setSelectedImage] = useState(product?.images[0] || '');
+  const [selectedSize, setSelectedSize] = useState(product?.sizes[0] || '');
   const [quantity, setQuantity] = useState(1);
+
+  if (!product) {
+    return <div className="text-center py-24 text-2xl text-muted-foreground">Product not found.</div>;
+  }
 
   return (
     <div className="max-w-5xl mx-auto py-12 flex flex-col md:flex-row gap-12">
@@ -97,5 +134,4 @@ export default function ProductDetail() {
       </div>
     </div>
   );
-}
-// TODO: Integrate with router param and backend API for dynamic product details. 
+} 

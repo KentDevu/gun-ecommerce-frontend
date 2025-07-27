@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Link } from '@tanstack/react-router';
 
 const featuredProducts = [
   { id: 1, name: 'Colt 1911', price: '$899', image: '/assets/colt1911.jpg', description: 'Classic .45 ACP pistol.' },
@@ -14,7 +15,9 @@ export default function Home() {
       <section className="py-16 text-center bg-gradient-to-b from-background to-muted">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to GunShop</h1>
         <p className="text-lg md:text-2xl mb-8 text-muted-foreground">Your trusted source for premium firearms and accessories.</p>
-        <Button size="lg" className="text-lg">Shop Now</Button>
+        <Link to="/products">
+          <Button className="text-lg">Shop Now</Button>
+        </Link>
       </section>
       <section className="py-12 max-w-6xl mx-auto">
         <h2 className="text-2xl font-semibold mb-8 text-center">Featured Products</h2>
@@ -29,7 +32,9 @@ export default function Home() {
                 <p className="text-muted-foreground mb-2">{product.description}</p>
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-lg">{product.price}</span>
-                  <Button variant="outline">View</Button>
+                  <Link to={`/products/${product.id}`} className="w-full">
+                    <Button className="w-full">View</Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
